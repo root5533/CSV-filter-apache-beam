@@ -61,7 +61,7 @@ public class App
                 String[] details = iter.next();
                 total_profit += Float.parseFloat(details[details.length - 1]) / 1000000;
             }
-            String result = input.getKey().trim() + " region profits : " + total_profit + " million";
+            String result = input.getKey().trim() + " region profits : $ " + total_profit + " Million";
 //            System.out.println(result);
             return result;
         }
@@ -90,7 +90,7 @@ public class App
                 .apply(new CSVFilterRegion())
                 .apply(GroupByKey.<String, String[]>create())
                 .apply(MapElements.via(new FindKeyValueFn()))
-                .apply("Result", TextIO.write().to("Final"));
+                .apply("Result", TextIO.write().to(options.getOutput()));
         pipe.run();
 
     }
