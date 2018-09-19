@@ -1,5 +1,6 @@
 package org.wso2.beam;
 
+import org.apache.beam.runners.flink.FlinkRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.options.Default;
@@ -14,22 +15,19 @@ import sun.java2d.pipe.SpanShapeRenderer;
 import java.util.Arrays;
 import java.util.Iterator;
 
-/**
- * Hello world!
- *
- */
+
 public class App 
 {
 
     private interface CSVOptions extends PipelineOptions {
 
         @Description("Set input target")
-        @Default.String("input-small.csv")
+        @Default.String("/home/tuan/WSO2/CSV-filter-apache-beam/input-large.csv")
         String getInputFile();
         void setInputFile(String value);
 
         @Description("Set output target")
-        @Default.String("output")
+        @Default.String("/home/tuan/WSO2/CSV-filter-apache-beam/outputs/output")
         String getOutput();
         void setOutput(String value);
 
@@ -62,7 +60,6 @@ public class App
                 total_profit += Float.parseFloat(details[details.length - 1]) / 1000000;
             }
             String result = input.getKey().trim() + " region profits : $ " + total_profit + " Million";
-//            System.out.println(result);
             return result;
         }
 
@@ -80,6 +77,7 @@ public class App
     public static void main( String[] args )
     {
         CSVOptions options = PipelineOptionsFactory.fromArgs(args).as(CSVOptions.class);
+        options.setRunner(FlinkRunner.class);
         runCSVDemo(options);
     }
 
