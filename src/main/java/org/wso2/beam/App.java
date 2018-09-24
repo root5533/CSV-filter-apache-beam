@@ -27,7 +27,7 @@ public class App
         void setInputFile(String value);
 
         @Description("Set output target")
-        @Default.String("/home/tuan/WSO2/CSV-filter-apache-beam/outputs/output")
+        @Default.String("/Users/admin/Projects/CSV-filter-apache-beam/output/result")
         String getOutput();
         void setOutput(String value);
 
