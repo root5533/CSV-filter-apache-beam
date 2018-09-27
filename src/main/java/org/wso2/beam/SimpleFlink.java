@@ -1,6 +1,7 @@
 package org.wso2.beam;
 
 import org.apache.beam.runners.flink.FlinkRunner;
+import org.apache.beam.runners.siddhi.SiddhiRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.options.Default;
@@ -44,7 +45,7 @@ public class SimpleFlink {
 
     public static void main(String[] args) {
         FlinkOptions options = PipelineOptionsFactory.fromArgs(args).as(FlinkOptions.class);
-        options.setRunner(FlinkRunner.class);
+        options.setRunner(SiddhiRunner.class);
         runSimpleFlinkApp(options);
     }
 
