@@ -25,11 +25,14 @@ public class SiddhiRunner extends PipelineRunner<PipelineResult> {
 
     @Override
     public PipelineResult run(Pipeline pipeline) {
+//        this.logWarningIfPCollectionViewHasNonDeterministicKeyCoder(pipeline);
 
         //Set metrics
         LOG.info("Executing pipeline with Siddhi");
+        SiddhiPipelineExecutionEnvironment env = new SiddhiPipelineExecutionEnvironment(options);
         //Set execution environment
         LOG.info("Translate pipeline to Siddhi Program");
+        env.translate(this, pipeline);
         //Set translation
         LOG.info("Start execution of pipeline");
         //Pipeline execute
