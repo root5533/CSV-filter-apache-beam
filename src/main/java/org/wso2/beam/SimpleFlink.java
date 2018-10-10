@@ -8,6 +8,7 @@ import org.apache.beam.sdk.options.*;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.PCollection;
+import org.wso2.beam.localrunner.LocalRunner;
 
 public class SimpleFlink {
 
@@ -42,9 +43,10 @@ public class SimpleFlink {
 
     public static void main(String[] args) {
         SiddhiOptions options = PipelineOptionsFactory.fromArgs(args).as(SiddhiOptions.class);
-        options.setRunner(FlinkRunner.class);
-        options.setStreaming(true);
+        options.setRunner(LocalRunner.class);
+//        options.setStreaming(true);
         runSimpleFlinkApp(options);
     }
+
 
 }
