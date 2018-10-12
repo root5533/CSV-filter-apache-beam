@@ -25,10 +25,17 @@ public class LocalRunner extends PipelineRunner<PipelineResult> {
 
     @Override
     public PipelineResult run(Pipeline pipeline) {
+        int targetParallelism = 4;
         LOG.info("Executing local runner");
         LocalGraphVisitor graphVisitor = new LocalGraphVisitor();
         pipeline.traverseTopologically(graphVisitor);
+        //keyedPValueVisitor
         DirectGraph graph = graphVisitor.getGraph();
+        EvaluationContext context = EvaluationContext.create(graph);
+        //TransformEvaluatorRegistry
+        ExecutorService executor = ExecutorService.create(targetParallelism, context);
+        executor.start(graph, new RootProvider(pipeline.getOptions()));
+
         return null;
     }
 

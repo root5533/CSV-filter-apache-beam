@@ -30,6 +30,8 @@ public class DirectGraph implements ExecutableGraph<AppliedPTransform<?, ?, ?>, 
         this.stepNames = stepNames;
     }
 
-
+    public Set<AppliedPTransform<?, ?, ?>> getRootTransforms() {
+        return this.rootTransforms;
+    }
 
 }

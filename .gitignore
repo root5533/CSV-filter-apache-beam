@@ -1,4 +1,5 @@
 .idea/
 target/
 outputs/
+output/
 input-large.csv
