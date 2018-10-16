@@ -3,8 +3,11 @@ package org.wso2.beam.localrunner;
 import org.apache.beam.sdk.io.Read;
 import org.apache.beam.sdk.options.PipelineOptions;
 import org.apache.beam.sdk.runners.AppliedPTransform;
+import org.apache.beam.sdk.util.WindowedValue;
+import org.apache.commons.collections.map.HashedMap;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class RootProvider {
@@ -15,18 +18,19 @@ public class RootProvider {
         this.options = options;
     }
 
-    public Collection<?> getInitialInputs(AppliedPTransform<?, ?, ?> transform, int targetParallelism) throws Exception {
+    public Map<WindowedValue, AppliedPTransform<?, ?, ?>> getInitialInputs(AppliedPTransform<?, ?, ?> transform, int targetParallelism) throws Exception {
 
         //Decide whether bounded or bounded
-        Collection<?> input;
+        Map<WindowedValue, AppliedPTransform<?, ?, ?>> inputBundle = new HashedMap();
         if (transform.getTransform() instanceof Read.Bounded) {
-            BoundedReadEvaluator eval = new BoundedReadEvaluator(this.options);
-            eval.getInitialInputs(transform, targetParallelism);
-//            ConcurrentLinkedQueue queue = new ConcurrentLinkedQueue();
-//            queue.po
+            BoundedReadEvaluator eval = BoundedReadEvaluator.create(this.options);
+            inputBundle = eval.getInitialInputs(transform, targetParallelism);
         }
-
-        return null;
+        if (inputBundle.size() == 0) {
+            return null;
+        } else {
+            return inputBundle;
+        }
 
     }
 

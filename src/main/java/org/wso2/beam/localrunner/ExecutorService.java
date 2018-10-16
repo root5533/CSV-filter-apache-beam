@@ -1,6 +1,7 @@
 package org.wso2.beam.localrunner;
 
 import org.apache.beam.sdk.runners.AppliedPTransform;
+import org.apache.beam.sdk.util.WindowedValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,12 +28,16 @@ public class ExecutorService {
     public void start(DirectGraph graph, RootProvider rootProvider) {
 
         int numOfSplits = Math.max(3, this.targetParallelism);
-
+        TransformExecutor executor;
         AppliedPTransform root;
         for (Iterator iter = graph.getRootTransforms().iterator(); iter.hasNext(); ) {
             root = (AppliedPTransform)iter.next();
             try {
-                Collection<?> initialInputs = rootProvider.getInitialInputs(root, numOfSplits);
+                Map<WindowedValue, AppliedPTransform<?, ?, ?>> initialInputs = rootProvider.getInitialInputs(root, numOfSplits);
+                if (initialInputs != null) {
+                    executor = TransformExecutor.create(graph, initialInputs);
+                    executor.run();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
