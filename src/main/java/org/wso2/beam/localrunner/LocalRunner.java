@@ -1,6 +1,5 @@
 package org.wso2.beam.localrunner;
 
-import org.apache.beam.runners.siddhi.SiddhiPipelineOptions;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.PipelineRunner;
@@ -29,13 +28,9 @@ public class LocalRunner extends PipelineRunner<PipelineResult> {
         LOG.info("Executing local runner");
         LocalGraphVisitor graphVisitor = new LocalGraphVisitor();
         pipeline.traverseTopologically(graphVisitor);
-        //keyedPValueVisitor
         DirectGraph graph = graphVisitor.getGraph();
-        EvaluationContext context = EvaluationContext.create(graph);
-        //TransformEvaluatorRegistry
-        ExecutorService executor = ExecutorService.create(targetParallelism, context);
+        ExecutorService executor = ExecutorService.create(targetParallelism);
         executor.start(graph, new RootProvider(pipeline.getOptions()));
-
         return null;
     }
 

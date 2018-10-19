@@ -54,13 +54,15 @@ public class BoundedReadEvaluator<T> {
             BoundedSource<T> source = (BoundedSource<T>) element.getValue();
             BoundedReader<T> reader = source.createReader(this.options);
             boolean contentsRemaining = reader.start();
-            Set<WindowedValue<T>> output = new HashSet();
-            while (contentsRemaining = reader.advance()) {
+            Set<WindowedValue<T>> output;
+            for (output = new HashSet(); contentsRemaining; contentsRemaining = reader.advance()) {
                 output.add(WindowedValue.timestampedValueInGlobalWindow(reader.getCurrent(), reader.getCurrentTimestamp()));
             }
             resultBundle.put(output, element.toString());
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            System.out.println(resultBundle.size());
         }
     }
 

@@ -8,10 +8,11 @@ import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.PCollection;
 import org.wso2.beam.localrunner.LocalPipelineOptions;
+import org.wso2.beam.localrunner.LocalRunner;
 
-public class SimpleFlink {
+public class SimpleLocalRunner {
 
-    private interface LocalOptions extends PipelineOptions, StreamingOptions {
+    private interface LocalOptions extends LocalPipelineOptions, StreamingOptions {
         @Description("Set input target")
         @Default.String("/Users/admin/Projects/CSV-filter-apache-beam/simple.txt")
         String getInputFile();
@@ -32,7 +33,7 @@ public class SimpleFlink {
         }
     }
 
-    private static void runSimpleFlinkApp(LocalOptions options) {
+    private static void runSimpleLocalApp(LocalOptions options) {
         Pipeline pipe = Pipeline.create(options);
         PCollection<String> col1 = pipe.apply("Readfile", TextIO.read().from(options.getInputFile()));
         PCollection<String> col2 = col1.apply("PardoTransform", ParDo.of(new LetterCount()));
@@ -42,9 +43,8 @@ public class SimpleFlink {
 
     public static void main(String[] args) {
         LocalOptions options = PipelineOptionsFactory.fromArgs(args).as(LocalOptions.class);
-        options.setRunner(FlinkRunner.class);
-        options.setStreaming(true);
-        runSimpleFlinkApp(options);
+        options.setRunner(LocalRunner.class);
+        runSimpleLocalApp(options);
     }
 
 

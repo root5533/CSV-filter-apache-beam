@@ -1,6 +1,5 @@
 package org.wso2.beam;
 
-import org.apache.beam.runners.flink.FlinkRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.options.*;
@@ -9,9 +8,9 @@ import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.PCollection;
 import org.wso2.beam.localrunner.LocalPipelineOptions;
 
-public class SimpleFlink {
+public class SimpleDirectRunner {
 
-    private interface LocalOptions extends PipelineOptions, StreamingOptions {
+    private interface LocalOptions extends LocalPipelineOptions, StreamingOptions {
         @Description("Set input target")
         @Default.String("/Users/admin/Projects/CSV-filter-apache-beam/simple.txt")
         String getInputFile();
@@ -42,8 +41,6 @@ public class SimpleFlink {
 
     public static void main(String[] args) {
         LocalOptions options = PipelineOptionsFactory.fromArgs(args).as(LocalOptions.class);
-        options.setRunner(FlinkRunner.class);
-        options.setStreaming(true);
         runSimpleFlinkApp(options);
     }
 

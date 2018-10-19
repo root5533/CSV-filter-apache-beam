@@ -7,7 +7,9 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PInput;
 import org.apache.beam.sdk.values.PValue;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 public class DirectGraph implements ExecutableGraph<AppliedPTransform<?, ?, ?>, PValue> {
@@ -15,23 +17,31 @@ public class DirectGraph implements ExecutableGraph<AppliedPTransform<?, ?, ?>, 
     private final Map<PCollection<?>, AppliedPTransform<?, ?, ?>> producers;
     private final ListMultimap<PInput, AppliedPTransform<?, ?, ?>> perElementConsumers;
     private final Set<AppliedPTransform<?, ?, ?>> rootTransforms;
+    private final Queue<AppliedPTransform<?, ?, ?>> parentTransforms;
     private final Map<AppliedPTransform<?, ?, ?>, String> stepNames;
 
     public static DirectGraph create(Map<PCollection<?>, AppliedPTransform<?, ?, ?>> producers, ListMultimap<PInput, AppliedPTransform<?, ?, ?>> perElementConsumers,
-                                     Set<AppliedPTransform<?, ?, ?>> rootTransforms, Map<AppliedPTransform<?, ?, ?>, String> stepNames) {
-        return new DirectGraph(producers, perElementConsumers, rootTransforms, stepNames);
+                                     Set<AppliedPTransform<?, ?, ?>> rootTransforms, Queue<AppliedPTransform<?, ?, ?>> parentTransforms, Map<AppliedPTransform<?, ?, ?>, String> stepNames) {
+        return new DirectGraph(producers, perElementConsumers, rootTransforms, parentTransforms, stepNames);
     }
 
     private DirectGraph(Map<PCollection<?>, AppliedPTransform<?, ?, ?>> producers, ListMultimap<PInput, AppliedPTransform<?, ?, ?>> perElementConsumers,
-                        Set<AppliedPTransform<?, ?, ?>> rootTransforms, Map<AppliedPTransform<?, ?, ?>, String> stepNames) {
+                        Set<AppliedPTransform<?, ?, ?>> rootTransforms, Queue<AppliedPTransform<?, ?, ?>> parentTransforms, Map<AppliedPTransform<?, ?, ?>, String> stepNames) {
         this.producers = producers;
         this.perElementConsumers = perElementConsumers;
         this.rootTransforms = rootTransforms;
         this.stepNames = stepNames;
+        this.parentTransforms = parentTransforms;
     }
 
     public Set<AppliedPTransform<?, ?, ?>> getRootTransforms() {
         return this.rootTransforms;
+    }
+
+    public Queue<AppliedPTransform<?, ?, ?>> getParentTransforms() { return this.parentTransforms; }
+
+    public List<AppliedPTransform<?, ?, ?>> getPerElementConsumers(PValue consumed) {
+        return this.perElementConsumers.get(consumed);
     }
 
 }
