@@ -37,4 +37,8 @@ public class ExecutionContext {
         return (CommittedBundle) this.rootBundlesIterator.next();
     }
 
+    public void addOutputBundle(CommittedBundle bundle) {
+        this.bundles.put(bundle.getPCollection(), bundle);
+    }
+
 }

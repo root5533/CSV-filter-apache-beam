@@ -22,4 +22,8 @@ public class CommittedBundle<T> {
         return this.bundle;
     }
 
+    public SourceWrapper getSourceWrapper() {
+        return (SourceWrapper) this.values.poll();
+    }
+
 }
