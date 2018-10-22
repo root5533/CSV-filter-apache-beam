@@ -29,7 +29,13 @@ public class LocalRunner extends PipelineRunner<PipelineResult> {
         LocalGraphVisitor graphVisitor = new LocalGraphVisitor();
         pipeline.traverseTopologically(graphVisitor);
         DirectGraph graph = graphVisitor.getGraph();
-        ExecutorService executor = ExecutorService.create(targetParallelism);
+//        ExecutorService executor = ExecutorService.create(targetParallelism);
+//        executor.start(graph, new RootProvider(pipeline.getOptions()));
+
+        /**
+         * Hard coded execution
+         */
+        SimpleLocalRunnerService executor = SimpleLocalRunnerService.create(targetParallelism);
         executor.start(graph, new RootProvider(pipeline.getOptions()));
         return null;
     }

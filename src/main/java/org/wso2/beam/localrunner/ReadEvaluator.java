@@ -7,19 +7,27 @@ import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.PCollection;
 
+import java.util.Iterator;
+
 public class ReadEvaluator<T> {
 
     AppliedPTransform<PBegin, PCollection<T>, PTransform<PBegin, PCollection<T>>> transform;
+    ExecutionContext context;
 
-    public ReadEvaluator(AppliedPTransform<PBegin, PCollection<T>, PTransform<PBegin, PCollection<T>>> transform) {
+    public ReadEvaluator(AppliedPTransform<PBegin, PCollection<T>, PTransform<PBegin, PCollection<T>>> transform, ExecutionContext context) {
         this.transform = transform;
+        this.context = context;
     }
 
-    public SourceWrapper createSourceWrapper() throws Exception {
+    public void execute() throws Exception {
         Read.Bounded boundedInput = (Read.Bounded) this.transform.getTransform();
         BoundedSource<T> source = boundedInput.getSource();
         SourceWrapper sourceWrapper = new SourceWrapper(source, 1, transform.getPipeline().getOptions());
-        return sourceWrapper;
+        for (Iterator iter = this.transform.getOutputs().values().iterator(); iter.hasNext();) {
+            CommittedBundle<SourceWrapper> bundle = new CommittedBundle<>((PCollection) iter.next());
+            bundle.addItem(sourceWrapper);
+            this.context.addRootBundle(bundle);
+        }
     }
 
 }

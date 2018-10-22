@@ -31,4 +31,8 @@ public class Bundle {
         return this.readers;
     }
 
+    public SourceWrapper getReader(PCollection key) {
+        return readers.get(key);
+    }
+
 }

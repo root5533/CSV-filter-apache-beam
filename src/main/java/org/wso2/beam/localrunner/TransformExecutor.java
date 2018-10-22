@@ -7,38 +7,16 @@ import org.apache.beam.sdk.io.WriteFiles;
 import org.apache.beam.sdk.runners.AppliedPTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.util.WindowedValue;
+import org.apache.beam.sdk.values.PCollection;
 
 import java.util.Iterator;
 import java.util.Map;
 
-public class TransformExecutor {
+/**
+ * Decides which evaluator to create depending on transform
+ */
 
-//    private Map<?, ?> inputBundle;
-//    DirectGraph graph;
-//    private Map<?, ?> resultBundle;
-//
-//    private TransformExecutor(DirectGraph graph, Map<?, ?> inputBundle) {
-//        this.graph = graph;
-//        this.inputBundle = inputBundle;
-//    }
-//
-//    public static TransformExecutor create(DirectGraph graph, Map<?, ?> inputBundle) {
-//        return new TransformExecutor(graph, inputBundle);
-//    }
-//
-//    public void run() {
-//        //read source
-//        if (inputBundle != null) {
-//
-//            BoundedReadEvaluator evaluator = BoundedReadEvaluator.getBoundedReadEvaluator();
-//            for (Iterator iter = inputBundle.keySet().iterator(); iter.hasNext();) {
-//                evaluator.processElement((WindowedValue) iter.next());
-//            }
-//
-//
-//
-//        }
-//    }
+public class TransformExecutor {
 
     private AppliedPTransform currentTransform;
     private Bundle bundle;
@@ -48,15 +26,16 @@ public class TransformExecutor {
         this.bundle = bundle;
     }
 
-    public boolean run() {
+    public boolean run() throws Exception {
         try {
             if (this.currentTransform.getTransform() instanceof Read.Bounded) {
-                ReadEvaluator evaluator = new ReadEvaluator(this.currentTransform);
-                SourceWrapper reader = evaluator.createSourceWrapper();
-                this.bundle.setSourceReader(reader, this.currentTransform.getOutputs());
+//                ReadEvaluator evaluator = new ReadEvaluator(this.currentTransform);
+//                SourceWrapper reader = evaluator.createSourceWrapper();
+//                this.bundle.setSourceReader(reader, this.currentTransform.getOutputs());
             } else if (this.currentTransform.getTransform() instanceof ParDo.MultiOutput) {
                 //Implement simplerunnerdofn for all pardo
-
+//                PardoEvaluator evaluator = new PardoEvaluator(this.currentTransform, this.bundle);
+//                evaluator.execute();
             } else if (this.currentTransform.getTransform() instanceof WriteFiles) {
                 //implement right file
             } else {
