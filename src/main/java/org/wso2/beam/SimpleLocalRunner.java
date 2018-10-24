@@ -14,12 +14,12 @@ public class SimpleLocalRunner {
 
     private interface LocalOptions extends LocalPipelineOptions, StreamingOptions {
         @Description("Set input target")
-        @Default.String("/home/tuan/WSO2/CSV-filter-apache-beam/simple.txt")
+        @Default.String("/Users/admin/Projects/CSV-filter-apache-beam/simple.txt")
         String getInputFile();
         void setInputFile(String value);
 
         @Description("Set output target")
-        @Default.String("/home/tuan/WSO2/CSV-filter-apache-beam/output/result")
+        @Default.String("/Users/admin/Projects/CSV-filter-apache-beam/output/result")
         String getOutput();
         void setOutput(String value);
     }

@@ -3,6 +3,7 @@ package org.wso2.beam.localrunner;
 import org.apache.beam.sdk.runners.AppliedPTransform;
 import org.apache.beam.sdk.util.WindowedValue;
 import org.apache.beam.sdk.values.PCollection;
+import org.apache.commons.collections.MultiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,9 +74,12 @@ public class SimpleLocalRunnerService {
             }
 
             for (Iterator iter = graph.getAllPerElementConsumers().asMap().values().iterator(); iter.hasNext();) {
-                AppliedPTransform transform = (AppliedPTransform) iter.next();
+                List transformList = (List) iter.next();
+                AppliedPTransform transform = (AppliedPTransform) transformList.get(0);
                 if (transform.getFullName().equals("Writefile/WriteFiles/FinalizeTempFileBundles/Finalize/ParMultiDo(Finalize)")) {
                     CommittedBundle bundle = context.getFinalBundle();
+                    WriteEvaluator eval = new WriteEvaluator(transform, bundle, context);
+                    eval.execute();
                 }
             }
 

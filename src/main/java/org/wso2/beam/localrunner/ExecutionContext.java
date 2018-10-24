@@ -1,10 +1,9 @@
 package org.wso2.beam.localrunner;
 
+import org.apache.beam.sdk.util.WindowedValue;
 import org.apache.beam.sdk.values.PCollection;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ExecutionContext {
 
@@ -45,7 +44,14 @@ public class ExecutionContext {
         for ( Iterator iter = this.bundles.values().iterator(); iter.hasNext(); ) {
             CommittedBundle currentBundle = (CommittedBundle) iter.next();
             if (currentBundle.getPCollection().getName().equals("Writefile/WriteFiles/WriteUnshardedBundlesToTempFiles/WriteUnshardedBundles.unwrittenRecords")) {
-                return currentBundle;
+                Queue values = currentBundle.getValues();
+                WindowedValue value = (WindowedValue) values.poll();
+                ArrayList list = new ArrayList();
+                list.add(value.getValue());
+                WindowedValue newValue = WindowedValue.timestampedValueInGlobalWindow(list, value.getTimestamp());
+                CommittedBundle<WindowedValue> newBundle = new CommittedBundle(currentBundle.getPCollection());
+                newBundle.addItem(newValue);
+                return newBundle;
             }
         }
         return null;
