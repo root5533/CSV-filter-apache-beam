@@ -7,8 +7,8 @@ import java.util.Queue;
 
 public class CommittedBundle<T> {
 
-    PCollection bundle;
-    Queue<T> values = new LinkedList<>();
+    private PCollection bundle;
+    private Queue<T> values = new LinkedList<>();
 
     public CommittedBundle(PCollection bundle) {
         this.bundle = bundle;
@@ -24,6 +24,10 @@ public class CommittedBundle<T> {
 
     public SourceWrapper getSourceWrapper() {
         return (SourceWrapper) this.values.poll();
+    }
+
+    public Queue getValues() {
+        return this.values;
     }
 
 }

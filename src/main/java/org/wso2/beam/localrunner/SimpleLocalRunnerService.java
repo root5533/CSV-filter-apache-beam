@@ -1,6 +1,8 @@
 package org.wso2.beam.localrunner;
 
 import org.apache.beam.sdk.runners.AppliedPTransform;
+import org.apache.beam.sdk.util.WindowedValue;
+import org.apache.beam.sdk.values.PCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +48,45 @@ public class SimpleLocalRunnerService {
             AppliedPTransform<?, ?, ?> pardoTransform = transforms.get(0);
             PardoEvaluator evaluator = new PardoEvaluator(pardoTransform, rootBundle, context);
             evaluator.execute();
+
+            /**
+             * Execute WriteFile
+             */
+            PCollection key = null;
+            for (Iterator iter = pardoTransform.getOutputs().values().iterator(); iter.hasNext(); ) {
+                key = (PCollection) iter.next();
+            }
+
+
+            AppliedPTransform<?, ?, ?> writeTransform = null;
+            if (key != null) {
+                CommittedBundle<WindowedValue> bundle = context.getBundle(key);
+                transforms = graph.getPerElementConsumers(bundle.getPCollection());
+                writeTransform = transforms.get(0);
+                PCollection col = (PCollection) writeTransform.getOutputs().values().toArray()[0];
+                transforms = graph.getPerElementConsumers(col);
+                writeTransform = transforms.get(0);
+                if (writeTransform != null) {
+                    WriteEvaluator eval = new WriteEvaluator(writeTransform, bundle, context);
+                    eval.execute();
+                }
+            }
+
+            for (Iterator iter = graph.getAllPerElementConsumers().asMap().values().iterator(); iter.hasNext();) {
+                AppliedPTransform transform = (AppliedPTransform) iter.next();
+                if (transform.getFullName().equals("Writefile/WriteFiles/FinalizeTempFileBundles/Finalize/ParMultiDo(Finalize)")) {
+                    CommittedBundle bundle = context.getFinalBundle();
+                }
+            }
+
+//            for (int i = 0; i<10; i++) {
+//                PCollection col = (PCollection) writeTransform.getOutputs().values().toArray()[0];
+//                transforms = graph.getPerElementConsumers(col);
+//                writeTransform = transforms.get(0);
+//                System.out.println("writeTransform : " + writeTransform.getFullName());
+//            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

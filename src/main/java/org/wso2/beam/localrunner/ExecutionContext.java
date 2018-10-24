@@ -41,4 +41,14 @@ public class ExecutionContext {
         this.bundles.put(bundle.getPCollection(), bundle);
     }
 
+    public CommittedBundle getFinalBundle() {
+        for ( Iterator iter = this.bundles.values().iterator(); iter.hasNext(); ) {
+            CommittedBundle currentBundle = (CommittedBundle) iter.next();
+            if (currentBundle.getPCollection().getName().equals("Writefile/WriteFiles/WriteUnshardedBundlesToTempFiles/WriteUnshardedBundles.unwrittenRecords")) {
+                return currentBundle;
+            }
+        }
+        return null;
+    }
+
 }

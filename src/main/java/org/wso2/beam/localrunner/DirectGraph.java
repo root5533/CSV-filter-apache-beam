@@ -44,4 +44,8 @@ public class DirectGraph implements ExecutableGraph<AppliedPTransform<?, ?, ?>, 
         return this.perElementConsumers.get(consumed);
     }
 
+    public ListMultimap getAllPerElementConsumers() {
+        return this.perElementConsumers;
+    }
+
 }

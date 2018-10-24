@@ -59,8 +59,13 @@ public class DoFnOperator<InputT, OutputT> {
 
     }
 
+    public void start() {
+        this.delegate.startBundle();
+    }
+
     public void finish() {
         this.context.addOutputBundle(outputBundle);
+        this.delegate.finishBundle();
     }
 
     public void processElement(WindowedValue<InputT> element) {

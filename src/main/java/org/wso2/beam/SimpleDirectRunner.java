@@ -41,6 +41,7 @@ public class SimpleDirectRunner {
 
     public static void main(String[] args) {
         LocalOptions options = PipelineOptionsFactory.fromArgs(args).as(LocalOptions.class);
+        options.setStreaming(true);
         runSimpleFlinkApp(options);
     }
 
