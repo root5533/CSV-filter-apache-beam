@@ -40,7 +40,7 @@
             <version>2.6.0</version>
         </dependency>
 
-        <!-- Makes the DirectRunner available when running a pipeline. -->
+         <!--Makes the DirectRunner available when running a pipeline.-->
         <dependency>
             <groupId>org.apache.beam</groupId>
             <artifactId>beam-runners-direct-java</artifactId>
@@ -56,18 +56,18 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.beam</groupId>
-            <artifactId>beam-runners-google-cloud-dataflow-java</artifactId>
-            <version>2.6.0</version>
-            <scope>runtime</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.beam</groupId>-->
+            <!--<artifactId>beam-runners-google-cloud-dataflow-java</artifactId>-->
+            <!--<version>2.6.0</version>-->
+            <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.apache.beam</groupId>
-            <artifactId>beam-sdks-java-io-google-cloud-platform</artifactId>
-            <version>${beam.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.beam</groupId>-->
+            <!--<artifactId>beam-sdks-java-io-google-cloud-platform</artifactId>-->
+            <!--<version>${beam.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.beam</groupId>
@@ -76,25 +76,44 @@
         </dependency>
 
         <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-core</artifactId>
-            <version>${siddhi.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.beam</groupId>
+            <artifactId>beam-runners-core-construction-java</artifactId>
+            <version>2.6.0</version>
         </dependency>
         <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-query-api</artifactId>
-            <version>${siddhi.version}</version>
+            <groupId>org.apache.beam</groupId>
+            <artifactId>beam-runners-core-java</artifactId>
+            <version>2.6.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-query-compiler</artifactId>
-            <version>${siddhi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-annotations</artifactId>
-            <version>${siddhi.version}</version>
-        </dependency>
+
+
+
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-core</artifactId>-->
+            <!--<version>${siddhi.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-query-api</artifactId>-->
+            <!--<version>${siddhi.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-query-compiler</artifactId>-->
+            <!--<version>${siddhi.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-annotations</artifactId>-->
+            <!--<version>${siddhi.version}</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 

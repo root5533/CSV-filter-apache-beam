@@ -3,10 +3,7 @@ package org.wso2.beam;
 import org.apache.beam.runners.flink.FlinkRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
-import org.apache.beam.sdk.options.Default;
-import org.apache.beam.sdk.options.Description;
-import org.apache.beam.sdk.options.PipelineOptions;
-import org.apache.beam.sdk.options.PipelineOptionsFactory;
+import org.apache.beam.sdk.options.*;
 import org.apache.beam.sdk.transforms.*;
 import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
@@ -19,7 +16,7 @@ import java.util.Iterator;
 public class App 
 {
 
-    private interface CSVOptions extends PipelineOptions {
+    private interface CSVOptions extends PipelineOptions, StreamingOptions {
 
         @Description("Set input target")
         @Default.String("/home/tuan/WSO2/CSV-filter-apache-beam/input-large.csv")
@@ -78,6 +75,7 @@ public class App
     {
         CSVOptions options = PipelineOptionsFactory.fromArgs(args).as(CSVOptions.class);
         options.setRunner(FlinkRunner.class);
+        options.setStreaming(true);
         runCSVDemo(options);
     }
 

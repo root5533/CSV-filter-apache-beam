@@ -1,6 +1,5 @@
 package org.wso2.beam.localrunner;
 
-
 import com.google.common.collect.ListMultimap;
 import org.apache.beam.sdk.runners.AppliedPTransform;
 import org.apache.beam.sdk.values.PCollection;

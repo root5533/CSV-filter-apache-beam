@@ -1,6 +1,6 @@
 package org.wso2.beam.localrunner;
 
-import com.google.auto.value.AutoValue;
+//import com.google.auto.value.AutoValue;
 import org.apache.beam.sdk.io.Read;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.io.WriteFiles;
